@@ -191,7 +191,11 @@ class CrossPlatformLink(dotbot.plugins.Link, dotbot.Plugin, CrossPlatformTask):
                         success &= self._create(destination)
                     if force or relink:
                         success &= self._delete(
-                            path, destination, relative, canonical_path, force
+                            source=path,
+                            path=destination,
+                            relative=relative,
+                            canonical_path=canonical_path,
+                            force=force,
                         )
                     success &= self._link(
                         path,
@@ -222,19 +226,18 @@ class CrossPlatformLink(dotbot.plugins.Link, dotbot.Plugin, CrossPlatformTask):
                             success &= self._create(glob_link_destination)
                         if force or relink:
                             success &= self._delete(
-                                glob_full_item,
-                                glob_link_destination,
-                                relative,
-                                canonical_path,
-                                force,
+                                source=glob_full_item,
+                                path=glob_link_destination,
+                                relative=relative,
+                                canonical_path=canonical_path,
+                                force=force,
                             )
                         success &= self._link(
-                            glob_full_item,
-                            glob_link_destination,
-                            relative,
-                            canonical_path,
-                            ignore_missing,
-                            fallback_to_copy,
+                            source=glob_full_item,
+                            path=glob_link_destination,
+                            relative=relative,
+                            canonical_path=canonical_path,
+                            force=ignore_missing,
                         )
             else:
                 if create:
@@ -253,7 +256,11 @@ class CrossPlatformLink(dotbot.plugins.Link, dotbot.Plugin, CrossPlatformTask):
                     continue
                 if force or relink:
                     success &= self._delete(
-                        path, destination, relative, canonical_path, force
+                        source=path,
+                        path=destination,
+                        relative=relative,
+                        canonical_path=canonical_path,
+                        force=force,
                     )
                 success &= self._link(
                     path,
