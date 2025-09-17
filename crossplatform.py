@@ -191,12 +191,12 @@ class CrossPlatformLink(dotbot.plugins.Link, dotbot.Plugin, CrossPlatformTask):
                         success &= self._create(destination)
                     if force or relink:
                         success &= self._delete(
-                            source=path,
+                            target=path,
                             path=destination,
                             relative=relative,
                             canonical_path=canonical_path,
                             force=force,
-                        )
+                        )[1]
                     success &= self._link(
                         path,
                         destination,
@@ -226,14 +226,14 @@ class CrossPlatformLink(dotbot.plugins.Link, dotbot.Plugin, CrossPlatformTask):
                             success &= self._create(glob_link_destination)
                         if force or relink:
                             success &= self._delete(
-                                source=glob_full_item,
+                                target=glob_full_item,
                                 path=glob_link_destination,
                                 relative=relative,
                                 canonical_path=canonical_path,
                                 force=force,
-                            )
+                            )[1]
                         success &= self._link(
-                            source=glob_full_item,
+                            target=glob_full_item,
                             path=glob_link_destination,
                             relative=relative,
                             canonical_path=canonical_path,
@@ -256,12 +256,12 @@ class CrossPlatformLink(dotbot.plugins.Link, dotbot.Plugin, CrossPlatformTask):
                     continue
                 if force or relink:
                     success &= self._delete(
-                        source=path,
+                        target=path,
                         path=destination,
                         relative=relative,
                         canonical_path=canonical_path,
                         force=force,
-                    )
+                    )[1]
                 success &= self._link(
                     path,
                     destination,
@@ -275,6 +275,9 @@ class CrossPlatformLink(dotbot.plugins.Link, dotbot.Plugin, CrossPlatformTask):
         else:
             self._log.error("Some links were not successfully set up")
         return success
+
+    def _link_destination(self, path):
+        return self._link_target(path)
 
     def _link(
         self,
